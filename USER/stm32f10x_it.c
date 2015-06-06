@@ -3,18 +3,18 @@
 
 //#define USE_UCOS_II
 #ifdef USE_UCOS_II
-  extern void OSIntEnter(void);
-  extern void OSIntExit(void);
+extern void OSIntEnter(void);
+extern void OSIntExit(void);
 #else
-  #define OSIntEnter()
-  #define OSIntExit()
+#define OSIntEnter()
+#define OSIntExit()
 #endif
 
 void EXTI0_IRQHandler(void)
 {
 	OSIntEnter();
 	/*KEY_WKUP*/
-	if(EXTI_GetITStatus(EXTI_Line0)==SET)
+	if(EXTI_GetITStatus(EXTI_Line0) == SET)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line0);
 	}
@@ -24,7 +24,7 @@ void EXTI1_IRQHandler(void)
 {
 	OSIntEnter();
 	/*KEY_S3*/
-	if(EXTI_GetITStatus(EXTI_Line1)==SET)
+	if(EXTI_GetITStatus(EXTI_Line1) == SET)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line1);
 	}
@@ -34,7 +34,7 @@ void EXTI2_IRQHandler(void)
 {
 	OSIntEnter();
 	/*KEY_S2*/
-	if(EXTI_GetITStatus(EXTI_Line2)==SET)
+	if(EXTI_GetITStatus(EXTI_Line2) == SET)
 	{
 		EXTI_ClearITPendingBit(EXTI_Line2);
 	}
@@ -46,7 +46,7 @@ void drv_irHandler(void);//红外接收中断
 void EXTI9_5_IRQHandler(void)
 {
 	OSIntEnter();
-	if(EXTI_GetITStatus(EXTI_Line5)==SET)
+	if(EXTI_GetITStatus(EXTI_Line5) == SET)
 	{
 		drv_irHandler();
 		EXTI_ClearITPendingBit(EXTI_Line5);
@@ -63,14 +63,13 @@ extern void drv_touchHandler(void);
 void EXTI15_10_IRQHandler(void)
 {
 	OSIntEnter();
-	if(EXTI_GetITStatus(EXTI_Line12)==SET)
+	if(EXTI_GetITStatus(EXTI_Line12) == SET)
 	{
-		drv_touchHandler();
 		EXTI_ClearITPendingBit(EXTI_Line12);
 	}
 //	if(EXTI_GetITStatus(EXTI_Line13)==SET)
 //	{
-//		
+//
 //		EXTI_ClearITPendingBit(EXTI_Line13);
 //	}
 	OSIntExit();
@@ -82,28 +81,28 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {
-	while (1)
+	while(1)
 	{
 	}
 }
 
 void MemManage_Handler(void)
 {
-	while (1)
+	while(1)
 	{
 	}
 }
 
 void BusFault_Handler(void)
 {
-	while (1)
+	while(1)
 	{
 	}
 }
 
 void UsageFault_Handler(void)
 {
-	while (1)
+	while(1)
 	{
 	}
 }
@@ -119,9 +118,11 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
 }
-void SysTick_Handler1ms(void);		//define in main.c
+void SysTick_Handler1ms(void);		//defined in main.c
+void sys_taskScheduler(void);     //defined in sys_core.c
 void SysTick_Handler(void)
 {
 	SysTick_Handler1ms();
+	sys_taskScheduler();
 }
 

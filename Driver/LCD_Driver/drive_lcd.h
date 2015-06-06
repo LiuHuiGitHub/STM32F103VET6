@@ -2,8 +2,8 @@
 #define  __DRIVE_LCD_H__
 #include "typedef.h"
 
-//TFTLCD部分外要调用的函数		   
-extern UINT16  POINT_COLOR;//默认红色    
+//TFTLCD部分外要调用的函数
+extern UINT16  POINT_COLOR;//默认红色
 extern UINT16  BACK_COLOR; //背景颜色.默认为白色
 
 //定义LCD的尺寸
@@ -36,27 +36,27 @@ extern UINT16  BACK_COLOR; //背景颜色.默认为白色
 
 
 /* 函数声明 */
-void drv_lcdDrawPoint(UINT16 x,UINT16 y);
+void drv_lcdDrawPoint(UINT16 x, UINT16 y);
 void drv_lcdDrawBigPoint(UINT16 x, UINT16 y);
-void drv_lcdSetCursor(UINT8 Xpos,UINT16 Ypos);
+void drv_lcdSetCursor(UINT8 Xpos, UINT16 Ypos);
 void drv_lcdInit(void);
 void drv_lcdSetWindow(UINT8 x, UINT16 y, UINT8 x_end, UINT16 y_end);
 void drv_lcdShowString(UINT8 x, UINT16 y, UINT8 *p);
-void LCD_ShowNum(UINT8 x,UINT16 y,UINT32 num,UINT8 len,UINT8 size);
-void LCD_ShowChar(UINT8 x,UINT16 y,UINT8 chars,UINT8 size,UINT8 mode);
+void LCD_ShowNum(UINT8 x, UINT16 y, UINT32 num, UINT8 len, UINT8 size);
+void LCD_ShowChar(UINT8 x, UINT16 y, UINT8 chars, UINT8 size, UINT8 mode);
 void drv_lcdShowPicture(UINT8 Xpos, UINT16 Ypos, UINT8 Height, UINT16 Width, UINT8 *bitmap);
 void drv_lcdClear(UINT16 Color);
 UINT16 drv_lcdWriteOneASCII(UINT8 *pucMsk,
-                              UINT16 x0,
-                              UINT16 y0,
-                              UINT16 color);
+                            UINT16 x0,
+                            UINT16 y0,
+                            UINT16 color);
 UINT16 drv_lcdWriteOneHzChar(UINT8 *pucMsk,
-                               UINT16 x0,
-                               UINT16 y0,
-                               UINT16 color);
-void drv_lcdWriteString(UINT16 x0, UINT16 y0,UINT8 *pcStr, UINT16 color);
+                             UINT16 x0,
+                             UINT16 y0,
+                             UINT16 color);
+void drv_lcdWriteString(UINT16 x0, UINT16 y0, UINT8 *pcStr, UINT16 color);
 void drv_lcdDrawLine(UINT16 x1, UINT16 y1, UINT16 x2, UINT16 y2);
-void drv_lcdDrawCircle(UINT8 x0,UINT16 y0,UINT8 r);
+void drv_lcdDrawCircle(UINT8 x0, UINT16 y0, UINT8 r);
 
 /***********************************************************************************
 9320/9325 LCD

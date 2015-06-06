@@ -1,0 +1,48 @@
+//Note:CAN报文自动生成器配置文件
+//@1
+
+Config Bound			500K				/*配置CAN波特率为500K，请勿随意修改*/
+Config CircleNum		100					/*配置指针分度为100，请勿随意修改*/
+
+Start Light Typedef							/*灯开始读取标志，此行请勿修改*/
+/*灯报文格式，请按以下填写*/
+/*Name										id			ByteStart		BitStart		BitOver		ON		OFF		SemdTime*/
+
+EMS_MIL,									0x355,		0,				5,				6,			1,		0,		100
+EMS_SSMWWarningLampCtorl,					0x355,		0,				1,				1,			1,		0,		100
+ESP_ABSFail_Status,							0x218,		0,				3,				3,			1,		0,		10
+ESP_EBDFail_Status,							0x218,		0,				2,				2,			1,		0,		10
+ESP_ABSFunctionStatus,						0x218,		0,				1,				1,			0,		1,		10
+ESP_EBDActiveStatus,						0x218,		0,				0,				0,			1,		0,		10
+ABS_BrakePedalStatus,						0x218,		6,				5,				6,			1,		0,		10
+SRS_DriverBuckleSwitchStatus,				0x050,		1,				6,				7,			1,		0,		500
+SRS_PassengerBuckleSwitchStatus,			0x050,		1,				4,				5,			1,		0,		500
+EPS_TorqSensorStatus,						0x2A0,		1,				0,				0,			1,		0,		20
+BCM_LowBeamStatus,							0x288,		0,				6,				7,			1,		0,		40
+BCM_HighBeamStatus,							0x288,		0,				4,				5,			1,		0,		40
+BCM_FrontFoglampStatus,						0x288,		0,				2,				3,			1,		0,		40
+BCM_RearFoglampStatus,						0x288,		0,				0,				1,			1,		0,		40
+BCM_TurnIndicatorLeft,						0x288,		1,				6,				7,			1,		0,		40
+BCM_TurnIndicatorRight,						0x288,		1,				4,				5,			1,		0,		40
+BCM_PositionLampStatus,						0x288,		1,				2,				3,			1,		0,		40
+BCM_DriverDoorStatus,						0x288,		2,				7,				7,			1,		0,		40
+BCM_PassengerDoorStatus,					0x288,		2,				6,				6,			1,		0,		40
+BCM_LeftRearDoorStatus,						0x288,		2,				5,				5,			1,		0,		40
+BCM_RightRearDoorStatus,					0x288,		2,				4,				4,			1,		0,		40
+BCM_TrunkStatus,							0x288,		2,				3,				3,			1,		0,		40
+BCM_HoodStatus,								0x288,		2,				2,				2,			1,		0,		40
+BCM_SunroofStatus,							0x288,		2,				1,				1,			1,		0,		40
+
+ESP_VehicleSpeed_Enable,					0x218,		4,				5,				5,			1,		0,		10
+
+End Light Typedef							/*灯结束读取标志，此行请勿修改*/
+
+Start Circle Typedef						/*指针开始读取标志，此行请勿修改*/
+/*指针报文格式，请按以下填写*/
+/*Name,										Id			ByteStart		BitStart		BitLen		Value		SemdTime*/
+
+EMS_EngineSpeed,							0x255,		2,				0,				16,			32767,		10,
+ESP_VehicleSpeed,							0x218,		4,				0,				5,			16,			10,
+EMS_EngineCoolanTemperature,				0x275,		2,				0,				8,			254,		20,
+
+End Circle Typedef							/*指针结束读取标志，此行请勿修改*/

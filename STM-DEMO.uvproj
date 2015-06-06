@@ -12,13 +12,13 @@
       <ToolsetName>ARM-ADS</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STM32F103VE</Device>
+          <Device>STM32F103ZE</Device>
           <Vendor>STMicroelectronics</Vendor>
           <Cpu>IRAM(0x20000000-0x2000FFFF) IROM(0x8000000-0x807FFFF) CLOCK(8000000) CPUTYPE("Cortex-M3")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"STARTUP\ST\STM32F10x\startup_stm32f10x_hd.s" ("STM32 High Density Line Startup Code")</StartupFile>
           <FlashDriverDll>UL2CM3(-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_512 -FS08000000 -FL080000)</FlashDriverDll>
-          <DeviceId>4225</DeviceId>
+          <DeviceId>4216</DeviceId>
           <RegisterFile>stm32f10x.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
@@ -100,13 +100,13 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments>-REMAP</SimDllArguments>
+          <SimDllArguments></SimDllArguments>
           <SimDlgDll>DARMSTM.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pSTM32F103VC</SimDlgDllArguments>
+          <SimDlgDllArguments>-pSTM32F103ZE</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
+          <TargetDlgDll>TARMSTM.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-pSTM32F103ZE</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -163,10 +163,10 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4099</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
-          <Flash2>Segger\JL2CM3.dll</Flash2>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
         </Utilities>
@@ -349,9 +349,9 @@
             <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_STDPERIPH_DRIVER,STM32F10X_HD</Define>
+              <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\App;.\Driver;.\FWlib\CMSIS\startup;.\FWlib\inc;.\FWlib\src;.\uCOS-II\Source;.\uCOS-II\Ports;.\USER;.\FWlib;.\uCOS-II;.\Driver\LCD_Driver;.\Driver\Touch;.\Hwa;.\System</IncludePath>
+              <IncludePath>.\App;.\Driver;.\FWlib\CMSIS\startup;.\FWlib\inc;.\FWlib\src;.\uCOS-II\Source;.\uCOS-II\Ports;.\USER;.\FWlib;.\uCOS-II;.\Driver\LCD_Driver;.\Driver\Touch;.\Hwa;.\System;.\App\app_can;.\UserLib;.\App\app_can\CanMsgCreate\Debug;.\System\Core</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -415,35 +415,37 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>CMSIS</GroupName>
+          <GroupName>App</GroupName>
           <Files>
             <File>
-              <FileName>startup_stm32f10x_hd.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\FWlib\CMSIS\startup\startup_stm32f10x_hd.s</FilePath>
+              <FileName>app_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\app_can\app_can.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f10x.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>.\FWlib\Lib\stm32f10x.lib</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>1</ModuleSelection>
-                  <IncludeInBuild>2</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules>core_cm3.o|1|0|0|0,system_stm32f10x.o|1|0|0|0,misc.o|1|0|0|0,stm32f10x_adc.o|1|0|0|0,stm32f10x_bkp.o|1|0|0|0,stm32f10x_can.o|1|0|0|0,stm32f10x_dac.o|1|0|0|0,stm32f10x_dma.o|1|0|0|0,stm32f10x_exti.o|1|0|0|0,stm32f10x_gpio.o|1|0|0|0,stm32f10x_i2c.o|1|0|0|0,stm32f10x_iwdg.o|1|0|0|0,stm32f10x_pwr.o|1|0|0|0,stm32f10x_rcc.o|1|0|0|0,stm32f10x_rtc.o|1|0|0|0,stm32f10x_spi.o|1|0|0|0,stm32f10x_tim.o|1|0|0|0,stm32f10x_usart.o|1|0|0|0,stm32f10x_wwdg.o|1|0|0|0</IncludeLibraryModules>
-                </CommonProperty>
-                <FileArmAds/>
-              </FileOption>
+              <FileName>app_canItf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\app_can\app_canItf.c</FilePath>
+            </File>
+            <File>
+              <FileName>CanMsg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\app_can\CanMsgCreate\Debug\CanMsg.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_taskCan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\app_taskCan.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Hwa</GroupName>
+          <Files>
+            <File>
+              <FileName>hwa_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hwa\hwa_key.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -466,32 +468,14 @@
               <FilePath>.\Driver\drive_e2.c</FilePath>
             </File>
             <File>
-              <FileName>drive_lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Driver\LCD_Driver\drive_lcd.c</FilePath>
-            </File>
-            <File>
-              <FileName>drive_touch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Driver\Touch\drive_touch.c</FilePath>
-            </File>
-            <File>
               <FileName>drive_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Driver\drive_usart.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>App</GroupName>
-        </Group>
-        <Group>
-          <GroupName>Hwa</GroupName>
-          <Files>
             <File>
-              <FileName>hwa_key.c</FileName>
+              <FileName>drive_spi595.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Hwa\hwa_key.c</FilePath>
+              <FilePath>.\Driver\drive_spi595.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -509,11 +493,6 @@
               <FilePath>.\System\sys_can.c</FilePath>
             </File>
             <File>
-              <FileName>sys_dac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\System\sys_dac.c</FilePath>
-            </File>
-            <File>
               <FileName>sys_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\System\sys_rtc.c</FilePath>
@@ -524,14 +503,159 @@
               <FilePath>.\System\sys_usart.c</FilePath>
             </File>
             <File>
+              <FileName>sys_pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\sys_pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\sys_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\sys_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\sys_core.c</FilePath>
+            </File>
+            <File>
               <FileName>sys_count.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\System\sys_count.c</FilePath>
             </File>
             <File>
-              <FileName>sys_pwm.c</FileName>
+              <FileName>sys_cpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\System\sys_pwm.c</FilePath>
+              <FilePath>.\System\sys_cpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>sys_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\sys_key.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CMSIS</GroupName>
+          <Files>
+            <File>
+              <FileName>misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_bkp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_bkp.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_dbgmcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_dbgmcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_iwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_iwdg.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_wwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\src\stm32f10x_wwdg.c</FilePath>
+            </File>
+            <File>
+              <FileName>core_cm3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\CMSIS\core_cm3.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_stm32f10x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FWlib\CMSIS\system_stm32f10x.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32f10x_md.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\FWlib\CMSIS\startup\startup_stm32f10x_md.s</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>UserLib</GroupName>
+          <Files>
+            <File>
+              <FileName>uLib_queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\UserLib\uLib_queue.c</FilePath>
             </File>
           </Files>
         </Group>

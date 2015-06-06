@@ -3,34 +3,46 @@
 
 static UINT16 u16_TimerPeriod;
 
-static void TIM1_Init(void)
+static void TIM1_Init(UINT32 freq)
 {
 	TIM_OCInitTypeDef TIM_OCInitStructure;
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
-#if (PWM_FREQUENCY >= 1100)
-	u16_TimerPeriod = (SystemCoreClock / PWM_FREQUENCY - 1);
-	TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 0;
-#elif (PWM_FREQUENCY >= 110)
-	u16_TimerPeriod = (SystemCoreClock / PWM_FREQUENCY / 10 - 1);
-	TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 10 - 1;
-#elif (PWM_FREQUENCY >= 11)
-	u16_TimerPeriod = (SystemCoreClock / PWM_FREQUENCY / 100 - 1);
-	TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 100 - 1;
-#else
-	u16_TimerPeriod = (SystemCoreClock / PWM_FREQUENCY / 2000 - 1);
-	TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 2000 - 1;
-#endif
+    if (freq >= (1100))
+    {
+        u16_TimerPeriod = (SystemCoreClock / freq - 1);
+        TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
+        TIM_TimeBaseInitStructure.TIM_Prescaler = 0;
+    }
+    else if (freq >= 110)
+    {
+        u16_TimerPeriod = (SystemCoreClock / freq / 10 - 1);
+        TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
+        TIM_TimeBaseInitStructure.TIM_Prescaler = 10 - 1;
+    }
+    else if (freq >= 11)
+    {
+        u16_TimerPeriod = (SystemCoreClock / freq / 100 - 1);
+        TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
+        TIM_TimeBaseInitStructure.TIM_Prescaler = 100 - 1;
+    }
+    else
+    {
+        u16_TimerPeriod = (SystemCoreClock / freq / 2000 - 1);
+        TIM_TimeBaseInitStructure.TIM_Period = u16_TimerPeriod;
+        TIM_TimeBaseInitStructure.TIM_Prescaler = 2000 - 1;
+    }
 	TIM_TimeBaseInitStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseInitStructure);
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
 	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
+    
+	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Disable;
+	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
+	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;
+    
 #ifdef ENABLE_OC1
 	TIM_OCInitStructure.TIM_Pulse = 0;
 	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
@@ -49,7 +61,7 @@ static void TIM1_Init(void)
 #endif
 }
 
-void sys_pwmInit(void)
+void sys_pwmInit(UINT32 freq)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	UINT16 GPIO_Pin = 0x0000;
@@ -70,16 +82,16 @@ void sys_pwmInit(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
-	TIM1_Init();
+	TIM1_Init(freq);
 	TIM_Cmd(TIM1, ENABLE);
 	TIM_CtrlPWMOutputs(TIM1, ENABLE);
 }
 
-void sys_pwmSetRatio(UINT8 Channal, SINT8 ratio)
+void sys_pwmSetRatio(UINT8 Channal, UINT8 ratio)
 {
 	UINT16 temp;
-	if(ratio > 100 || ratio < 0)
-	{ return; }
+	if(ratio > 100)
+	{ ratio = 100; }
 	temp = (UINT16)(((UINT32) ratio * u16_TimerPeriod) / 100);
 	if(ratio == 100)
 	{ temp = 0xffff; }

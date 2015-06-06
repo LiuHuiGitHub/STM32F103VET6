@@ -4,17 +4,6 @@
 #include "string.h"
 #include "system.h"
 
-#define USART1_RxBuff_SIZE			50
-#define USART1_TxBuff_SIZE			50
-volatile UINT8 USART1_TxBuff[USART1_TxBuff_SIZE];
-
-typedef struct _USART_RX_STRUCT
-{
-	BOOL flag;
-	UINT8 size;
-	UINT8 buff[USART1_RxBuff_SIZE];
-}USART_RX_STRUCT;
-
 USART_RX_STRUCT st_USART1_RX;
 
 static void TIM3_OverTimeInit(UINT16 overtime);
@@ -25,15 +14,19 @@ void drv_usart1Init(UINT32 boud)
 	st_USART1_RX.flag = FALSE;
 	st_USART1_RX.size = 0;
 	sys_usartInit(USART1, boud);
-	TIM3_OverTimeInit((UINT16)(38500000/boud));				//1000000us/boud*11(1 start, 8 data, 2 stop)*3.5
+	TIM3_OverTimeInit((UINT16)(38500000 / boud));				//1000000us/boud*11(1 start, 8 data, 2 stop)*3.5
 }
 void drv_usart1TxHandler(void)
 {
-	
 }
 void drv_usart1RxHandler(void)
 {
-	if(st_USART1_RX.size<USART1_RxBuff_SIZE)
+    if(st_USART1_RX.flag != FALSE)
+    {
+        st_USART1_RX.flag = FALSE;
+        st_USART1_RX.size = 0;
+    }
+	if(st_USART1_RX.size < USART1_RxBuff_SIZE)
 	{
 		st_USART1_RX.buff[st_USART1_RX.size] = USART1->DR;
 		st_USART1_RX.size++;
@@ -44,28 +37,23 @@ void drv_usart1RxHandler(void)
 static void drv_usartRx(void)
 {
 	st_USART1_RX.flag = TRUE;
-	LED1 = !LED1;
 }
 
 void TIM3_OverTimeInit(UINT16 overtime)
 {
 	TIM_TimeBaseInitTypeDef TIMx;
 	NVIC_InitTypeDef NVICx;
-	
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-	
 	TIMx.TIM_Period = overtime;
-	TIMx.TIM_Prescaler = 72-1;
+	TIMx.TIM_Prescaler = 72 - 1;
 	TIMx.TIM_ClockDivision = 0;
 	TIMx.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM3, &TIMx);
-	
 	NVICx.NVIC_IRQChannel = TIM3_IRQn;
 	NVICx.NVIC_IRQChannelPreemptionPriority = 1;
 	NVICx.NVIC_IRQChannelSubPriority = 3;
 	NVICx.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVICx);
-	
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
 	TIM_Cmd(TIM3, DISABLE);
@@ -73,7 +61,7 @@ void TIM3_OverTimeInit(UINT16 overtime)
 
 void TIM3_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM3, TIM_IT_Update)==SET)
+	if(TIM_GetITStatus(TIM3, TIM_IT_Update) == SET)
 	{
 		drv_usartRx();
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);

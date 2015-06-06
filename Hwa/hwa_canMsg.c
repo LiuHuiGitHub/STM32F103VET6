@@ -31,17 +31,15 @@ void hwa_canMsgInit(STCan_Msg *msg)
 	msg->Msg.Rx.Data[5] = 0x00;
 	msg->Msg.Rx.Data[6] = 0x00;
 	msg->Msg.Rx.Data[7] = 0x00;
-	msg->Msg.Rx.FMI= 0x00;
-	
+	msg->Msg.Rx.FMI = 0x00;
 	msg->Cycle = 0x00;
-	
 	msg->pstNextList = NULL;
 }
 /*******************************************************************************
-* function:	APP_CanMsg_Handler      
-* explain:		
+* function:	APP_CanMsg_Handler
+* explain:
 * input:		none
-*                
+*
 * output:		none
 * return:		none
 * other:		none
@@ -49,23 +47,23 @@ void hwa_canMsgInit(STCan_Msg *msg)
 void APP_CanMsg_Handler(void)
 {
 	STCan_Msg *pstMsg;
-	if(u8_canMsgRxEN==1)
+	if(u8_canMsgRxEN == 1)
 	{
-		if(pstListWritePoint!=NULL)
+		if(pstListWritePoint != NULL)
 		{
-				pstMsg = malloc(sizeof(STCan_Msg));
-				if(pstMsg!=NULL)
-				{
-					hwa_canMsgInit(pstMsg);
-					CAN_Receive(CAN1, CAN_FIFO0, &pstMsg->Msg.Rx);
-					pstListWritePoint->pstNextList = pstMsg;
-					pstListWritePoint = pstMsg;
-				}
-				else
-				{
-					u8_canMsgRxEN = 1;
-					LED2 = 1;
-				}
+			pstMsg = malloc(sizeof(STCan_Msg));
+			if(pstMsg != NULL)
+			{
+				hwa_canMsgInit(pstMsg);
+				CAN_Receive(CAN1, CAN_FIFO0, &pstMsg->Msg.Rx);
+				pstListWritePoint->pstNextList = pstMsg;
+				pstListWritePoint = pstMsg;
+			}
+			else
+			{
+				u8_canMsgRxEN = 1;
+				LED2 = 1;
+			}
 		}
 		else
 		{
@@ -85,7 +83,7 @@ void ListDelete(STCan_Msg *msg)
 void hwa_canSendMsg(void)
 {
 	pstListReadPoint = &ListHead;
-	while(pstListReadPoint!=NULL)
+	while(pstListReadPoint != NULL)
 	{
 		CAN_Transmit(CAN1, &pstListReadPoint->Msg.Tx);
 		Delay_ms(1);

@@ -4,10 +4,11 @@
 
 struct STCAN_Msg_
 {
-	union{
+	union
+	{
 		CanRxMsg Rx;
 		CanTxMsg Tx;
-	}Msg;
+	} Msg;
 	uint8_t Cycle;
 	struct STCAN_Msg_ *pstNextList;
 };

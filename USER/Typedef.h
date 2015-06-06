@@ -2,24 +2,21 @@
 #define __TYPEDEF_H__
 
 
-typedef unsigned char   uchar;
-typedef unsigned int    uint;
-typedef unsigned long   ulong;
+typedef unsigned char		BOOL;
 
-typedef unsigned char   UINT8;
-typedef signed char     SINT8;
-typedef unsigned short	UINT16;
+typedef unsigned char       UINT8;
+typedef signed char         SINT8;
+typedef unsigned short      UINT16;
 typedef signed short		SINT16;
 typedef unsigned int		UINT32;
 typedef signed int			SINT32;
-	 
-typedef unsigned char		BOOL;
+
 
 #ifndef TRUE
-#define TRUE		1u
+#define TRUE		(1u)
 #endif
 #ifndef FALSE
-#define FALSE		0u
+#define FALSE		(0u)
 #endif
 
 //#ifndef ENABLE
@@ -45,15 +42,15 @@ typedef unsigned char		BOOL;
 #define BIT13   (0x2000)
 #define BIT14   (0x4000)
 #define BIT15   (0x8000)
-	
+
 #define countof(a)				(sizeof(a)/sizeof(*(a)))
 
 /*位带操作,实现51类似的GPIO控制功能*/
 /*IO口操作宏定义 */
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+ \
-                              0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
-#define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 
-#define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum)) 
+                               0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2))
+#define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr))
+#define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum))
 //IO口地址映射
 #define GPIOA_ODR_Addr    (GPIOA_BASE+12) //0x4001080C 
 #define GPIOB_ODR_Addr    (GPIOB_BASE+12) //0x40010C0C 
@@ -70,7 +67,7 @@ typedef unsigned char		BOOL;
 #define GPIOE_IDR_Addr    (GPIOE_BASE+8)  //0x40011808 
 #define GPIOF_IDR_Addr    (GPIOF_BASE+8)  //0x40011A08 
 #define GPIOG_IDR_Addr    (GPIOG_BASE+8)  //0x40011E08 
- 
+
 //IO口操作,只对单一的IO口!    //0<=n<=15!
 #define PAout(n)   BIT_ADDR(GPIOA_ODR_Addr,n)  //输出 
 #define PAin(n)    BIT_ADDR(GPIOA_IDR_Addr,n)  //输入 

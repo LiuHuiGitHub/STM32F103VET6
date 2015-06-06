@@ -3,14 +3,12 @@
 
 #include "typedef.h"
 
-#define PWM_FREQUENCY				4796		//Hz		PWM_FREQUENCY >= 1 Hz
-
 #define ENABLE_OC1
 //#define ENABLE_OC2
 //#define ENABLE_OC3
-//#define ENABLE_OC4
+#define ENABLE_OC4
 
-void sys_pwmInit(void);
-void sys_pwmSetRatio(UINT8 Channal, SINT8 ratio);
+void sys_pwmInit(UINT32 freq);
+void sys_pwmSetRatio(UINT8 Channal, UINT8 ratio);
 
 #endif

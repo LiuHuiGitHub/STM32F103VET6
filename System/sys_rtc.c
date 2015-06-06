@@ -1,7 +1,7 @@
 /*********************************************************************************
  * 文件名  ：sys_rtc.c
  * 描述    ：实时时钟模块
- * 库版本  ：ST3.5.0   
+ * 库版本  ：ST3.5.0
  * 编写时间：2013年12月17日
  * 编写人  ：LiuHui
  *
@@ -51,37 +51,37 @@ static void RTC_Configuration(void)
 	PWR_BackupAccessCmd(ENABLE);
 //	/* 将外设BKP的全部寄存器重设为缺省值 */
 //	BKP_DeInit();
-	if(BKP_ReadBackupRegister(BKP_DR1)!=0xA5A5)
-  {
-    BKP_WriteBackupRegister(BKP_DR1,0xA5A5);
-	#if	RTC_CLK_LSE
+	if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
+	{
+		BKP_WriteBackupRegister(BKP_DR1, 0xA5A5);
+#if	RTC_CLK_LSE
 		/* 使能LSE（外部32.768KHz低速晶振）*/
 		RCC_LSEConfig(RCC_LSE_ON);
 		/* 等待外部晶振震荡稳定输出 */
-		while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET);
+		while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET);
 		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-	#elif RTC_CLK_LSI
-    RCC_LSICmd(ENABLE);
-    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
-  #elif RTC_CLK_HSE128
+#elif RTC_CLK_LSI
+		RCC_LSICmd(ENABLE);
+		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
+#elif RTC_CLK_HSE128
 		RCC_RTCCLKConfig(RCC_RTCCLKSource_HSE_Div128);
-	#else
-		#error not select RTC clock!
-	#endif
+#else
+#error not select RTC clock!
+#endif
 		/* 使能 RTC 的时钟供给 */
 		RCC_RTCCLKCmd(ENABLE);
 		/*等待RTC寄存器同步 */
 		RTC_WaitForSynchro();
-	#if	RTC_CLK_LSE
+#if	RTC_CLK_LSE
 		/* 32.768KHz晶振预分频值是32767,如果对精度要求很高可以修改此分频值来校准晶振 */
 		RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1) */
-  #elif RTC_CLK_LSI
-    RTC_SetPrescaler(50000);
-	#elif RTC_CLK_HSE128
+#elif RTC_CLK_LSI
+		RTC_SetPrescaler(50000);
+#elif RTC_CLK_HSE128
 		RTC_SetPrescaler(62499);
-	#else
-		#error not select RTC clock!
-	#endif
+#else
+#error not select RTC clock!
+#endif
 		/* 等待上一次对RTC寄存器的写操作完成 */
 		RTC_WaitForLastTask();
 	}
@@ -91,7 +91,7 @@ static void RTC_Configuration(void)
 	RTC_WaitForLastTask();
 	/* 使能RTC的秒中断 */
 	RTC_ITConfig(RTC_IT_SEC, ENABLE);
-		/* 等待上一次对RTC寄存器的写操作完成 */
+	/* 等待上一次对RTC寄存器的写操作完成 */
 	RTC_WaitForLastTask();
 	/* 使能RTC的闹钟中断 */
 	RTC_ITConfig(RTC_IT_ALR, ENABLE);
@@ -132,11 +132,11 @@ void sys_rtcSetTime(uint32_t time)
 
 //#define USE_UCOS_II
 #ifdef USE_UCOS_II
-  extern void OSIntEnter(void);
-  extern void OSIntExit(void);
+extern void OSIntEnter(void);
+extern void OSIntExit(void);
 #else
-  #define OSIntEnter()
-  #define OSIntExit()
+#define OSIntEnter()
+#define OSIntExit()
 #endif
 
 /**-------------------------------------------------------
@@ -148,12 +148,12 @@ void sys_rtcSetTime(uint32_t time)
 void RTC_IRQHandler(void)
 {
 	OSIntEnter();
-  /*  判断RTC是否发生了秒中断（也有可能是溢出或者闹钟中断) */
-  if (RTC_GetITStatus(RTC_IT_SEC) != RESET)
-  {
-    RTC_ClearITPendingBit(RTC_IT_SEC);
-    /* 置全局变量为1，通知主程序打印时间 */
-    b_rtcTimeDisplayFlag = 1;
+	/*  判断RTC是否发生了秒中断（也有可能是溢出或者闹钟中断) */
+	if(RTC_GetITStatus(RTC_IT_SEC) != RESET)
+	{
+		RTC_ClearITPendingBit(RTC_IT_SEC);
+		/* 置全局变量为1，通知主程序打印时间 */
+		b_rtcTimeDisplayFlag = 1;
 		/*RTC已加入日期，无需零点清零RTC寄存器*/
 //    /* 等待上一次对RTC寄存器的写操作完成 */
 //    RTC_WaitForLastTask();
@@ -164,9 +164,9 @@ void RTC_IRQHandler(void)
 //      /* 等待上一次对RTC寄存器的写操作完成 */
 //      RTC_WaitForLastTask();
 //    }
-  }
+	}
 	/*判断是否发生闹钟中断*/
-	else if(RTC_GetITStatus(RTC_IT_ALR)==SET)
+	else if(RTC_GetITStatus(RTC_IT_ALR) == SET)
 	{
 		RTC_ClearITPendingBit(RTC_IT_ALR);
 		b_rtcAlarmRingFlag = 1;

@@ -24,15 +24,26 @@
 
 #ifdef __cplusplus
 #if __cplusplus
-extern "C"{
+extern "C" {
 #endif
 #endif /* __cplusplus */
 
-extern volatile UINT8 *pTxbuffStart, *pTxbuffOver;
+    
+#define USART1_RxBuff_SIZE			50
+#define USART1_TxBuff_SIZE			50
+    
+    typedef struct
+    {
+        BOOL flag;
+        UINT8 size;
+        UINT8 buff[USART1_RxBuff_SIZE];
+    }USART_RX_STRUCT;
 
-extern void drv_usart1Init(UINT32 boud);
-extern void drv_usart1RxHandler(void);
-extern void drv_usart1TxHandler(void);
+    extern USART_RX_STRUCT st_USART1_RX;
+    
+	extern void drv_usart1Init(UINT32 boud);
+	extern void drv_usart1RxHandler(void);
+	extern void drv_usart1TxHandler(void);
 
 #ifdef __cplusplus
 #if __cplusplus

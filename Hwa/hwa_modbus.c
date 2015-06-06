@@ -28,7 +28,7 @@ typedef struct _CMD_STRUCT
 	UINT8 reg[2];
 	UINT8 data[2];
 	UINT8 crc[2];
-}CMD_STRUCT;
+} CMD_STRUCT;
 
 typedef struct _DATA_STRUCT
 {
@@ -37,7 +37,7 @@ typedef struct _DATA_STRUCT
 	UINT8 len;
 	UINT8 data[MAX_DARA_SIZE];
 	UINT8 crc[2];
-}DATA_STRUCT;
+} DATA_STRUCT;
 
 volatile CMD_STRUCT st_HostCmd;
 volatile DATA_STRUCT st_SlaveData;
@@ -75,7 +75,7 @@ void Uart_send(UINT8* data, UINT8 len);
 
 void Uart_send(UINT8* data, UINT8 len)
 {
-	
+
 }
 void ModBusInit(void)
 {
@@ -86,31 +86,31 @@ void Send(UINT8 addr, modbusFun fun, UINT8* data, UINT8 size)
 {
 	UINT16 crc;
 	UINT8 i, index = 0;
-	
+
 	if(size > MAX_DARA_SIZE)
 	{
 		return;
 	}
 	TxBuff[index++] = 0xA5;
 	TxBuff[index++] = 0xA5;
-	
+
 	TxBuff[index++] = addr;
 	TxBuff[index++]= fun;
 	TxBuff[index++] = size;
-	
+
 	crc = CRC16RTU(data, size);
-	
+
 	for(i=0; i<size; i++)
 	{
 		TxBuff[index++]= *data++;
 	}
-	
+
 	TxBuff[index++] = (UINT8)(crc>>8);
 	TxBuff[index++] = (UINT8)crc;
-	
+
 	TxBuff[index++] = 0xA5;
 	TxBuff[index++] = 0xA5;
-	
+
 	Uart_send((UINT8*)TxBuff, index);
 }
 static void rx_handle(void)

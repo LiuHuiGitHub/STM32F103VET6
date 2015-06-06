@@ -1,13 +1,13 @@
 /*********************************************************************************
  * 文件名  ：drive_flash.c
- * 描述    ：W25X16读写     
+ * 描述    ：W25X16读写
  * 硬件连接：--------------
  *          | PA5  -  CLK  |
  *          | PA6  -  MISO |
  *          | PA7  -  MOSI |
  *          | PA3  -  CS   |
  *           --------------
- * 库版本  ：ST3.5.0   
+ * 库版本  ：ST3.5.0
  * 编写时间：2013年12月6日
  * 编写人  ：LiuHui
  *
@@ -25,7 +25,7 @@
 #ifndef __DRIVE_FLASH_H__
 #define __DRIVE_FLASH_H__
 
-typedef enum {Sector=0x20,Block=0xd8, Chip=0xc7} EraseRange; 
+typedef enum {Sector = 0x20, Block = 0xd8, Chip = 0xc7} EraseRange;
 
 #define Dummy_Byte                  0xA5
 #define Busy_Flag                   0x01
@@ -47,10 +47,10 @@ typedef enum {Sector=0x20,Block=0xd8, Chip=0xc7} EraseRange;
 
 void dr_flashInit(void);
 /*传送1Byte数据*/
-u8 dr_flashSendByte(u8 byte);    
+u8 dr_flashSendByte(u8 byte);
 /*W25X写控制   ENABLE 使能   DISABLE 禁能*/
 void dr_flashCmd(FunctionalState NowState);
-/*读W25X_Device_ID*/ 
+/*读W25X_Device_ID*/
 u8 dr_flashReadDeviceID(void);
 /*读W25x_JEDEC_ID*/
 u32 dr_flashReadJedecID(void);
@@ -58,14 +58,14 @@ u32 dr_flashReadJedecID(void);
 u8 dr_flashReadStatus(void);
 /*写W25X寄存器状态*/
 void dr_flashWriteStatus(u8 NowStatus);
-/*清除W25X数据   
-EraseAddr清除地址    
+/*清除W25X数据
+EraseAddr清除地址
 Rangge 清除范围(Sector  4K   Block  64K   Chip  全部)*/
 void dr_flashErase(u32 EraseAddr, EraseRange Rangge);
 /*向W25X芯片写数据*/
-void dr_flashWritePage(u8* Data, u32 WriteAddr,u16 WriteByte);
+void dr_flashWritePage(u8 *Data, u32 WriteAddr, u16 WriteByte);
 /*从W25X芯片读数据*/
-void dr_flashReadData(u8* Data, u32 ReadAddr,u32 ReadByte);
+void dr_flashReadData(u8 *Data, u32 ReadAddr, u32 ReadByte);
 /*向W25X芯片写数据*/
-void dr_flashWriteData(u8* pBuffer, u32 WriteAddr, u32 NumByteToWrite);
+void dr_flashWriteData(u8 *pBuffer, u32 WriteAddr, u32 NumByteToWrite);
 #endif

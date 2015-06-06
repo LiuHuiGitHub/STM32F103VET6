@@ -1,5 +1,6 @@
 #include "system.h"
 #include "hwa_key.h"
+#include "sys_key.h"
 
 const BOOL KEY_Valid[KEY_NUM] = {1, 0, 0};
 volatile KEY_STRUCT KEY_K[KEY_NUM];

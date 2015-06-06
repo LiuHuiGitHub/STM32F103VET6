@@ -17,19 +17,19 @@ if(KEY_K[0].Flags.trig == TRUE)
 */
 typedef struct
 {
-	BOOL state			:1;
-	BOOL level			:1;
-	BOOL trig				:1;
-	BOOL unlash 		:1;
-	BOOL init				:1;
-}KEY_flag;
+	BOOL state			: 1;
+	BOOL level			: 1;
+	BOOL trig				: 1;
+	BOOL unlash 		: 1;
+	BOOL init				: 1;
+} KEY_flag;
 
 typedef struct
 {
 	KEY_flag Flags;				//按键标志组
 	UINT8 TimeDlyCnt;			//延时时间计数
 	UINT8 TimeCnt;				//状态转换时间计数
-}KEY_STRUCT;
+} KEY_STRUCT;
 
 #ifndef TRUE
 #define TRUE		1u
